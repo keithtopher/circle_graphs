@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--https://blog.js.cytoscape.org/2016/05/24/getting-started/-->
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>Pathways</title>
+    <script src='cytoscape.min.js'></script> <!-- Embeds cytoscape script into webpage -->
+    <script src="jquery.min.js"></script> <!-- Allows JSON file to be loaded -->
+</head>
+<style>
+    /* Edit the CSS (style) of webpage (not graph)
+   Defines the graph area of the div element
+   Takes up entire height and width of browser */
+    #cy {
+        width: 98%;
+        height: 98%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+</style>
+<body>
+	<div id="cy"></div>
+	<!-- Creates webpage body, holds div element named cy -->
+	<script>
+		/* Load the .json file of the network 
+		   This statement encloses "var cy =" */
+		$.getJSON("path_network_mild.json", function (data) {
+            //console.log(data);
+		/* Creates the graph instance from embedded cytoscape */	
+			var cy = cytoscape({
+			  	container: document.getElementById('cy'),
+			  	/* Define nodes and edges of graph 
+			  	   Obtain .json from variable "data" */
+			  	elements: data,
+			    /* Add style to graph */
+				style: [
+			        {
+			            selector: 'node',
+			            style: {
+			                shape: 'ellipse',
+			                'background-color': 'data(node_color)',
+			                label: 'data(name)',
+			                color: 'black',
+			                'text-halign': 'center',
+			                'text-valign': 'center',
+			                'text-rotation': 'data(rotation)',
+			                'border-color': 'black',
+			                'border-width': 1
+			                /* 'position': 'position' */
+			            }
+			        },
+			        {
+			        	selector: 'edge',
+			        	style: {
+			        		'line-color': 'black',
+			        		'width': 'data(edge_thick)',
+			        		'opacity': 'data(edge_trans)',
+			        		'curve-style': 'bezier',
+			        		'edge-distances': 'node-position'
+			        	}
+			        }],
+			    /* Define the layout of the graph */
+			    layout: {
+	    			name: 'preset'
+				}
+			});
+			/* runs an algorithm to define the layout */
+			/*
+			cy.layout({
+			    name: 'preset'
+			}).run();
+			*/
+		});	
+	</script>
+</body>
+</html>
